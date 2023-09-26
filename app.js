@@ -1,9 +1,16 @@
+const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 
 const dbConfig = require('./config/connectDB')
 const productRoutes = require('./routes/productRoutes')
 
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
+
+
+// Routes
 app.use('/products', productRoutes)
 
 try {
