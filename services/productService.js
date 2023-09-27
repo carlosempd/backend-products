@@ -7,7 +7,7 @@ const createProduct = async (req, res) => {
         })
 
         const created = await product.save()
-        res.status(201).json({
+        return res.status(201).json({
             message: "Product created successfully",
             product: created
         })
@@ -18,7 +18,7 @@ const createProduct = async (req, res) => {
     }
 }
 
-getAllProductsPaginated = async(req, res) => {
+const getAllProductsPaginated = async(req, res) => {
     const { page = 1, limit = 10, search } = req?.query || {};
     const filter = {}
     if (search) {
@@ -35,7 +35,7 @@ getAllProductsPaginated = async(req, res) => {
             .skip((page-1) * limit)
         const total = await Product.countDocuments();
 
-        res.status(200).json({
+        return res.status(200).json({
             data: productList,
             totalCount: total,
             totalPages: Math.ceil(total/limit),
@@ -49,7 +49,28 @@ getAllProductsPaginated = async(req, res) => {
     }
 }
 
+const getProductById = async(req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+            return res.status(404).json({
+                message: 'Product not found'
+            })
+        }
+        
+        return res.status(200).json({
+            data: product
+        })
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        })
+    }
+
+}
+
 module.exports = {
     createProduct,
-    getAllProductsPaginated
+    getAllProductsPaginated,
+    getProductById
 }

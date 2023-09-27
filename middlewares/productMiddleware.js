@@ -1,4 +1,6 @@
-const { createProductValidatorSchema } = require("../validators/productValidator")
+const {
+    createProductValidatorSchema
+} = require("../validators/productValidator")
 
 const createProductMiddleware = (req, res, next) => {
     const { error, value } = createProductValidatorSchema
