@@ -69,8 +69,27 @@ const getProductById = async(req, res) => {
 
 }
 
+const deleteProductById = async(req, res) => {
+    try {
+        const update = { isDeleted: true }
+        const filter = { _id: req.params.id }
+        const updated = await Product.findOneAndUpdate(filter, update, {
+            new: true
+        })
+        res.status(200).json({
+            message: 'Product updated succesfully',
+            data: updated
+        })
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        })
+    }
+}
+
 module.exports = {
     createProduct,
     getAllProductsPaginated,
-    getProductById
+    getProductById,
+    deleteProductById
 }
