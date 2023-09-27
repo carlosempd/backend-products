@@ -2,7 +2,8 @@ const {
     createProduct,
     getAllProductsPaginated,
     getProductById,
-    deleteProductById
+    deleteProductById,
+    updateProductById
 } = require("../services/productService")
 
 const getAllProductsController = ((req, res) => {
@@ -21,9 +22,19 @@ const deleteProduct = ((req, res) => {
     deleteProductById(req, res)
 })
 
+const updateProduct = ((req, res) => {
+    if (!Object.keys(req.body).length) {
+        return res.json({
+            message: 'Nothing to update'
+        })
+    }
+    updateProductById(req, res)
+})
+
 module.exports = {
     getAllProductsController,
     createProductController,
     getProductByIdController,
-    deleteProduct
+    deleteProduct,
+    updateProduct
 }
