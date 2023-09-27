@@ -1,10 +1,10 @@
-const Product = require("../models/product")
-const { createProduct } = require("../services/productService")
+const {
+    createProduct,
+    getAllProductsPaginated
+} = require("../services/productService")
 
 const getAllProductsController = ((req, res) => {
-    res.json({
-        message: 'List of products'
-    })
+    getAllProductsPaginated(req, res)
 })
 
 const createProductController = ((req, res) => {

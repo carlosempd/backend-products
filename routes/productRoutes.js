@@ -7,5 +7,6 @@ const { createProductMiddleware } = require('../middlewares/productMiddleware')
 const router = express.Router()
 
 router.post('', createProductMiddleware , createProductController)
+router.get('/',getAllProductsController )
 
 module.exports = router

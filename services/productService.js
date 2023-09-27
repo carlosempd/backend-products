@@ -18,7 +18,38 @@ const createProduct = async (req, res) => {
     }
 }
 
+getAllProductsPaginated = async(req, res) => {
+    const { page = 1, limit = 10, search } = req?.query || {};
+    const filter = {}
+    if (search) {
+        filter.name = {
+            $regex: `${ search }`,
+            $options: 'i'
+        }
+    }
+
+    try {
+        const productList = await Product.find()
+            .where({ isDeleted: false, ...filter })
+            .limit(limit*1)
+            .skip((page-1) * limit)
+        const total = await Product.countDocuments();
+
+        res.status(200).json({
+            data: productList,
+            totalCount: total,
+            totalPages: Math.ceil(total/limit),
+            currentPage: page,
+            perPage: limit
+        })
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        })
+    }
+}
 
 module.exports = {
-    createProduct
+    createProduct,
+    getAllProductsPaginated
 }
