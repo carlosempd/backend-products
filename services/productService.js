@@ -33,6 +33,7 @@ const getAllProductsPaginated = async(req, res) => {
             .where({ isDeleted: false, ...filter })
             .limit(limit*1)
             .skip((page-1) * limit)
+            .sort({ date: -1 })
         const total = await Product.countDocuments();
 
         return res.status(200).json({
