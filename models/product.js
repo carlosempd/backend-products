@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
 
+const historicalDataSchema = new mongoose.Schema({
+    value: { type: Number, required: true },
+    date: { type: Date, default: Date.now }
+})
+
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -28,6 +33,14 @@ const productSchema = new mongoose.Schema({
     stock: {
         type: String,
         required: true
+    },
+    priceHistory: {
+        type: [ historicalDataSchema ],
+        default: []
+    },
+    stockHistory: {
+        type: [ historicalDataSchema ],
+        default: []
     },
     isDeleted: {
         type: Boolean,

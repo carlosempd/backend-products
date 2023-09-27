@@ -94,19 +94,30 @@ const deleteProductById = async(req, res) => {
 
 const updateProductById = async(req, res) => {
     try {
-        const filter = { _id: req.params.id }
         const update = { ...req.body }
-        const updated = await Product.findOneAndUpdate(filter, update, {
-            new: true
-        })
-        if (!updated) {
+        const product = await Product.findById(req.params.id)
+        if (!product) {
             return res.status(404).json({
                 message: 'Product not found'
             })
         }
+        
+        if (update?.price) {
+            product.priceHistory.push({
+                value: update.price
+            })
+        }
+        if (update?.stock) {
+            product.stockHistory.push({
+                value: update.stock
+            })
+        }
+        Object.assign(product, req.update)
+        await product.save()
+        
         res.status(200).json({
             message: 'Product updated succesfully',
-            data: updated
+            data: product
         })
     } catch (error) {
         res.status(500).json({
