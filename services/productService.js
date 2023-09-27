@@ -9,7 +9,7 @@ const createProduct = async (req, res) => {
         const created = await product.save()
         return res.status(201).json({
             message: "Product created successfully",
-            product: created
+            data: created
         })
     } catch (error) {
         res.status(500).json({
@@ -33,6 +33,7 @@ const getAllProductsPaginated = async(req, res) => {
             .where({ isDeleted: false, ...filter })
             .limit(limit*1)
             .skip((page-1) * limit)
+            .sort({ date: -1 })
         const total = await Product.countDocuments();
 
         return res.status(200).json({
