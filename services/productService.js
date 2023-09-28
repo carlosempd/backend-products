@@ -103,17 +103,20 @@ const updateProductById = async(req, res) => {
             })
         }
         
-        if (update?.price) {
+        if (update?.price && update?.price !== product.price) {
             product.priceHistory.push({
                 value: update.price
             })
         }
-        if (update?.stock) {
+        if (update?.stock && update?.stock !== product.stock) {
             product.stockHistory.push({
                 value: update.stock
             })
         }
-        Object.assign(product, req.update)
+        // Object.assign(product, req.update)
+        for (let key in update) {
+            product[key] = update[key];
+        }
         await product.save()
         
         res.status(200).json({
